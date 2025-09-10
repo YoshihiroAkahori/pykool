@@ -1,0 +1,268 @@
+# Claude Code関連ファイル
+CLAUDE.md
+.claude/
+claude-*
+.anthropic/
+
+# セキュリティ関連ファイル
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example
+secrets/
+config/secrets/
+*.secret
+*.credentials
+auth.json
+service-account.json
+credentials.json
+.aws/
+.ssh/
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+known_hosts
+authorized_keys
+
+# API Keys & Tokens
+api_keys.txt
+tokens.txt
+*.token
+.api_key
+.access_token
+.secret_key
+
+# Database関連
+*.db
+*.sqlite
+*.sqlite3
+database.yml
+database.json
+connection_string.txt
+
+# パスワード関連
+passwords.txt
+passwd
+shadow
+.htpasswd
+.password
+
+# バックアップファイル（機密情報含む可能性）
+*.bak
+*.backup
+*.old
+*~
+.backup/
+backup/
+
+# 設定ファイル（機密情報含む可能性）
+config.ini
+config.yaml
+config.json
+settings.ini
+local_settings.py
+production.py
+
+# Python関連
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+conda-meta/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+
+# PyCharm
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# データファイル（大容量・機密）
+data/raw/
+data/processed/
+data/results/
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sam
+*.bam
+*.bai
+*.fa
+*.fasta
+*.fa.gz
+*.fasta.gz
+*.gtf
+*.gtf.gz
+*.gff
+*.gff.gz
+*.bed
+*.bedgraph
+*.bw
+*.bigwig
+*.wig
+
+# ログファイル
+logs/
+*.log
+*.log.*
+log/
+*.out
+*.err
+
+# 一時ファイル
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS関連
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.directory
+*.lnk
+
+# Git関連
+.git/
+*.orig
+*.rej
+
+# バイオインフォマティクス関連大容量ファイル
+*.sra
+*.cram
+*.vcf
+*.vcf.gz
+*.bcf
+*.gvcf
+*.tbi
+*.csi
+*.fai
+reference/
+genomes/
+annotations/
+indexes/
+*.bt2
+*.1.bt2
+*.2.bt2
+*.3.bt2
+*.4.bt2
+*.rev.1.bt2
+*.rev.2.bt2
+
+# 実行ファイル
+*.exe
+*.app
+*.deb
+*.rpm
+*.dmg
+
+# アーカイブファイル
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tbz2
+*.tar.xz
+*.txz
+*.7z
+*.rar
+
+# ドキュメント（機密の可能性）
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+!README.pdf
+!manual.pdf
+!protocol.pdf
+
+# ネットワーク設定
+.netrc
+.curlrc
+.wgetrc
+
+# Docker関連
+Dockerfile.local
+docker-compose.override.yml
+.dockerignore
+
+# 研究データ・論文関連
+manuscripts/
+papers/
+drafts/
+figures/private/
+data/private/
+results/private/
+analysis/private/
+
+# ライセンス・契約関連
+LICENSE.private
+NDA/
+agreements/
+contracts/
+
+# 個人情報
+personal/
+private/
+confidential/
+restricted/
