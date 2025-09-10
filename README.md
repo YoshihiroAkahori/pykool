@@ -46,48 +46,109 @@ kool/
 - Python 3.6.6以上
 - Jupyter Lab/Notebook
 
-### 外部ツール
+### 外部ツール（ソースからインストール）
 以下のバイオインフォマティクスツールが必要です：
 
+#### 1. FastQC
 ```bash
-# FastQC
-sudo apt-get install fastqc
+# 依存関係インストール
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
 
-# Bowtie2
-sudo apt-get install bowtie2
+# FastQCダウンロード・インストール
+cd /opt
+sudo wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.12.1.zip
+sudo unzip fastqc_v0.12.1.zip
+sudo chmod +x FastQC/fastqc
+sudo ln -s /opt/FastQC/fastqc /usr/local/bin/fastqc
+```
 
-# Cutadapt
+#### 2. Bowtie2
+```bash
+# 依存関係インストール
+sudo apt-get install build-essential libtbb-dev zlib1g-dev
+
+# Bowtie2ソースダウンロード・コンパイル
+cd /tmp
+wget https://github.com/BenLangmead/bowtie2/releases/download/v2.5.1/bowtie2-2.5.1-source.zip
+unzip bowtie2-2.5.1-source.zip
+cd bowtie2-2.5.1
+make
+sudo cp bowtie2* /usr/local/bin/
+```
+
+#### 3. Cutadapt
+```bash
+# Pythonパッケージマネージャーでインストール
 pip install cutadapt
+```
 
-# UCSC tools (bigwig生成用)
+#### 4. UCSC Tools（BigWig生成用）
+```bash
+# バイナリダウンロード・インストール
+cd /tmp
 wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig
 wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/wigToBigWig
 chmod +x bedGraphToBigWig wigToBigWig
 sudo mv bedGraphToBigWig wigToBigWig /usr/local/bin/
+```
 
-# gffread
-sudo apt-get install gffread
+#### 5. gffread
+```bash
+# 依存関係インストール
+sudo apt-get install build-essential
 
-# WiggleTools (オプション)
+# gffreadeソースダウンロード・コンパイル
+cd /tmp
+git clone https://github.com/gpertea/gffread.git
+cd gffread
+make
+sudo cp gffread /usr/local/bin/
+```
+
+#### 6. SAMtools
+```bash
+# 依存関係インストール
+sudo apt-get install build-essential libbz2-dev liblzma-dev libcurl4-openssl-dev libssl-dev
+
+# SAMtoolsソースダウンロード・コンパイル
+cd /tmp
+wget https://github.com/samtools/samtools/releases/download/1.18/samtools-1.18.tar.bz2
+tar -xjf samtools-1.18.tar.bz2
+cd samtools-1.18
+./configure --prefix=/usr/local
+make
+sudo make install
+```
+
+#### 7. WiggleTools（オプション）
+```bash
+# 依存関係インストール
+sudo apt-get install libgsl-dev libcurl4-openssl-dev
+
+# WiggleToolsソースダウンロード・コンパイル
+cd /tmp
 git clone https://github.com/Ensembl/WiggleTools.git
 cd WiggleTools
 make
 sudo cp bin/wiggletools /usr/local/bin/
 ```
 
-### condaを使用する場合（推奨）
-
+#### 8. icSHAPE/RBRPパイプライン
 ```bash
-# bioconda環境作成
-conda create -n rbrp-pipeline python=3.8
-conda activate rbrp-pipeline
+# icSHAPEパイプラインダウンロード
+cd /opt
+sudo git clone https://github.com/qczhang/icSHAPE.git
+sudo chmod +x icSHAPE/scripts/*.pl
 
-# バイオインフォマティクスツールインストール
-conda install -c bioconda fastqc bowtie2 cutadapt gffread
-conda install -c bioconda ucsc-bedgraphtobigwig ucsc-wigtobigwig
+# RBRPパイプライン追加スクリプト
+cd /tmp
+git clone https://github.com/linglanfang/RBRP.git
+sudo cp RBRP/scripts/*.pl /opt/icSHAPE/scripts/
 
-# Pythonパッケージインストール
-pip install -r requirements.txt
+# パス設定
+echo 'export PATH="/opt/icSHAPE/scripts:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 ## セットアップ手順
