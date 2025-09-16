@@ -11,6 +11,8 @@ Eric Koolラボの「Reactivity-based RNA profiling for analyzing transcriptome 
 ## 主な機能
 
 - 🔄 **完全自動化**: FASTQファイルを指定するだけで全プロセスが自動実行
+- 🔗 **ペアエンド対応**: ペアエンドリード（_1.fastq, _2.fastq）をデフォルトサポート
+- 🚀 **モダンシーケンサー対応**: デマルチプレックス・アダプタートリミング済みデータに対応
 - 📊 **品質管理**: FastQCによる品質確認とレポート生成
 - 🧬 **シーケンス解析**: デマルチプレックス、トリミング、アライメント
 - 📈 **RBRPスコア計算**: RNA-薬物相互作用サイトの同定
@@ -201,13 +203,26 @@ jupyter lab
 ### 3. 設定の編集
 ノートブックの設定セクションで以下を指定：
 
+#### ペアエンド設定（推奨・デフォルト）
 ```python
-# 入力FASTQファイル
+# 入力FASTQファイル（ペアエンド対応）
 INPUT_FASTQ_FILES = {
-    'sample1_probe_only': '/path/to/sample1_probe_only.fastq',
-    'sample1_probe_drug': '/path/to/sample1_probe_drug.fastq',
-    'sample2_DMSO_ctrl': '/path/to/sample2_DMSO_ctrl.fastq',
-    'sample2_drug_ctrl': '/path/to/sample2_drug_ctrl.fastq'
+    'sample1_probe_only': {
+        'R1': '/path/to/sample1_probe_only_1.fastq',
+        'R2': '/path/to/sample1_probe_only_2.fastq'
+    },
+    'sample1_probe_drug': {
+        'R1': '/path/to/sample1_probe_drug_1.fastq',
+        'R2': '/path/to/sample1_probe_drug_2.fastq'
+    },
+    'sample2_DMSO_ctrl': {
+        'R1': '/path/to/sample2_DMSO_ctrl_1.fastq',
+        'R2': '/path/to/sample2_DMSO_ctrl_2.fastq'
+    },
+    'sample2_drug_ctrl': {
+        'R1': '/path/to/sample2_drug_ctrl_1.fastq',
+        'R2': '/path/to/sample2_drug_ctrl_2.fastq'
+    }
 }
 
 # 参照ファイル
@@ -219,15 +234,44 @@ REFERENCE_FILES = {
 }
 ```
 
+#### シングルエンド設定（レガシー）
+シングルエンドデータの場合は、上記の構造で`R1`のみを使用するか、従来の形式を使用：
+```python
+INPUT_FASTQ_FILES = {
+    'sample1_probe_only': '/path/to/sample1_probe_only.fastq',
+    'sample1_probe_drug': '/path/to/sample1_probe_drug.fastq'
+    # ...
+}
+```
+
+#### 処理スキップオプション（モダンシーケンサー対応）
+```python
+# 🔧 処理スキップオプション
+PROCESSING_OPTIONS = {
+    'skip_demultiplex': True,      # 最近のシーケンサーでは既に実行済み
+    'skip_adapter_trimming': True, # 最近のシーケンサーでは既に実行済み
+    'skip_pcr_duplicate_removal': False,
+    'perform_quality_control': True,
+    'adapter_sequences': {
+        'R1': 'AGATCGGAAGAGCGGTTCAG',
+        'R2': 'AGATCGGAAGAGCGGTTCAG'
+    }
+}
+```
+
+**推奨設定**:
+- **NovaSeq/NextSeq等の最新シーケンサー**: デマルチプレックス・アダプタートリミングをスキップ
+- **HiSeq等の旧式シーケンサー**: 全ての処理を実行
+
 ### 4. パイプライン実行
 「Run All Cells」で全自動実行、または各セルを順次実行。
 
 ## 出力ファイル
 
 ### 処理済みデータ (`data/processed/`)
-- `*_demux.fastq`: デマルチプレックス済みFASTQ
-- `*_trimmed.fastq`: トリミング済みFASTQ
-- `*.sam`: アライメント結果
+- `*_demux_1.fastq`, `*_demux_2.fastq`: デマルチプレックス済みペアエンドFASTQ
+- `*_trimmed_1.fastq`, `*_trimmed_2.fastq`: トリミング済みペアエンドFASTQ
+- `*.sam`: ペアエンドアライメント結果
 - `*.rpkm`: 転写産物発現量
 - `*.rt`: RTstop解析結果
 - `*_rbrp.out`: RBRPスコア
@@ -235,7 +279,7 @@ REFERENCE_FILES = {
 ### 最終結果 (`data/results/`)
 - `*.bedgraph`: IGV用bedgraphファイル
 - `*.bw`: IGV用bigwigファイル
-- `processing_summary.csv`: 処理サマリー
+- `processing_summary_paired.csv`: ペアエンド処理サマリー
 - `figures/`: 可視化プロット
 
 ## パラメータ設定

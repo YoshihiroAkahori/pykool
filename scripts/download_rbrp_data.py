@@ -2,7 +2,7 @@
 """
 RBRP論文データ自動ダウンロードスクリプト
 GEO accession GSE229331からFASTQファイルを自動ダウンロード
-fasterq-dumpを使用してSRAデータを取得
+fasterq-dumpを使用してSRAデータを取得（ペアエンド対応）
 """
 
 import subprocess

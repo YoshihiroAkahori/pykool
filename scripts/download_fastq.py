@@ -5,7 +5,6 @@
 """
 
 import subprocess
-import os
 from pathlib import Path
 
 def download_rbrp_fastq():
@@ -19,6 +18,7 @@ def download_rbrp_fastq():
     print("🧬 RBRP論文データダウンロード開始")
     print("📄 論文: Reactivity-based RNA profiling (Fang & Kool, 2023)")
     print("🆔 GEO: GSE229331")
+    print("🔗 ペアエンドリード対応（_1.fastq, _2.fastq）")
     
     # SRA accession numbers (論文のGSE229331から)
     sra_accessions = [
@@ -90,11 +90,22 @@ def download_rbrp_fastq():
             result = subprocess.run(cmd, capture_output=True, text=True)
             
             if result.returncode == 0:
-                # ダウンロードされたファイルを確認
+                # ダウンロードされたファイルを確認（ペアエンド対応）
                 fastq_files = list(output_dir.glob(f"{sra_acc}*.fastq"))
                 if fastq_files:
                     print("✅ ダウンロード成功")
-                    for fastq_file in fastq_files:
+                    
+                    # ペアエンドファイルの確認
+                    read1_files = [f for f in fastq_files if '_1.fastq' in f.name or f.name.endswith('_1.fastq')]
+                    read2_files = [f for f in fastq_files if '_2.fastq' in f.name or f.name.endswith('_2.fastq')]
+                    single_files = [f for f in fastq_files if f not in read1_files and f not in read2_files]
+                    
+                    if read1_files and read2_files:
+                        print(f"   📄 ペアエンドデータ: {len(read1_files)} ペア")
+                    elif single_files:
+                        print(f"   📄 シングルエンドデータ: {len(single_files)} ファイル")
+                    
+                    for fastq_file in sorted(fastq_files):
                         size_mb = fastq_file.stat().st_size / (1024**2)
                         print(f"   📄 {fastq_file.name} ({size_mb:.1f} MB)")
                     successful += 1

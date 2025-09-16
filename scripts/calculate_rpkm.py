@@ -34,7 +34,7 @@ def calculate_rpkm(sam_file, output_file):
                     if transcript_lengths[transcript_name] == 0:
                         transcript_lengths[transcript_name] = read.reference_length
                     total_reads += 1
-    
+        
         print(f"総リード数: {total_reads}")
         print(f"マップされた転写産物数: {len(transcript_counts)}")
         
